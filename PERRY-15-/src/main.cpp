@@ -174,6 +174,7 @@ void usercontrol(void) {
   // User control code here, inside the loop
   int CHAIN_state = 1;
   int CATA_state = 1;
+  int CATA_pos = 270;
   INTAKE.resetPosition();
   CATA.resetPosition();
 
@@ -188,10 +189,11 @@ void usercontrol(void) {
     // ........................................................................
 
     if(Controller1.ButtonA.pressing()){
-      CATA.spin(fwd, 100, percent);
-      CATA_state = 1;
+      CATA_pos += 270;
+      CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+      CATA_state = 0;
     }else if (CATA_state == 1){
-      CATA.spinToPosition(120, degrees, 600, rpm, true);
+      CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
       CATA_state = 0;
     }else {
       CATA.stop(hold);
