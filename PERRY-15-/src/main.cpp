@@ -11,7 +11,7 @@
 // R2                   motor         6               
 // R3                   motor         7               
 // R4                   motor         8               
-// Inertial9            inertial      9               
+// Inertial             inertial      9               
 // Controller1          controller                    
 // CATA                 motor_group   20, 19          
 // INTAKE               motor         18              
@@ -47,7 +47,7 @@ Drive chassis(
 //Specify your drive setup below. There are seven options:
 //ZERO_TRACKER_NO_ODOM, ZERO_TRACKER_ODOM, TANK_ONE_ENCODER, TANK_ONE_ROTATION, TANK_TWO_ENCODER, TANK_TWO_ROTATION, HOLONOMIC_TWO_ENCODER, and HOLONOMIC_TWO_ROTATION
 //For example, if you are not using odometry, put ZERO_TRACKER_NO_ODOM below:
-ZERO_TRACKER_NO_ODOM,
+ZERO_TRACKER_ODOM,
 
 //Add the names of your Drive motors into the motor groups below, separated by commas, i.e. motor_group(Motor1,Motor2,Motor3).
 //You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
@@ -67,7 +67,7 @@ PORT9,
 //External ratio, must be in decimal, in the format of input teeth/output teeth.
 //If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
 //If the motor drives the wheel directly, this value is 1:
-1.3,
+0.75,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
@@ -101,7 +101,7 @@ PORT3,     -PORT4,
 //Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
 //For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
 //This distance is in inches:
--2,
+6.00,
 
 //Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
 1,
@@ -114,7 +114,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 0;
+int current_auton_selection = 1;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -122,23 +122,34 @@ void pre_auton(void) {
   vexcodeInit();
   default_constants();
 
+  Inertial.calibrate();
+  while(Inertial.isCalibrating()) {
+    wait(100, msec);
+  }
+
+  INTAKE.resetPosition();
+  CATA.resetPosition();
+
   while(auto_started == false){            //Changing the names below will only change their names on the
     Brain.Screen.clearScreen();            //brain screen for auton selection.
     switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
       case 0:
-        Brain.Screen.printAt(50, 50, "LEFT AUTO");
+        Brain.Screen.printAt(50, 50, "TUNE PID");
         break;
       case 1:
-        Brain.Screen.printAt(50, 50, "RIGHT AUTO");
+        Brain.Screen.printAt(50, 50, "LEFT AUTO");
         break;
       case 2:
+        Brain.Screen.printAt(50, 50, "RIGHT AUTO");
+        break;
+      case 3:
         Brain.Screen.printAt(50, 50, "SKILLS");
         break;
     }
     if(Brain.Screen.pressing()){
       while(Brain.Screen.pressing()) {}
       current_auton_selection ++;
-    } else if (current_auton_selection == 3){
+    } else if (current_auton_selection == 4){
       current_auton_selection = 0;
     }
     task::sleep(10);
@@ -149,12 +160,15 @@ void autonomous(void) {
   auto_started = true;
   switch(current_auton_selection){  
     case 0:
-      left_auto(); //This is the default auton, if you don't select from the brain.
-      break;        //Change these to be your own auton functions in order to use the auton selector.
-    case 1:         //Tap the screen to cycle through autons.
-      right_auto();
+      tune_PID();
+      break;        
+    case 1:         
+      left_auto();
       break;
     case 2:
+      right_auto();
+      break;
+    case 3:
       skills_auto();
       break;
  }
@@ -174,9 +188,14 @@ void usercontrol(void) {
   // User control code here, inside the loop
   int CHAIN_state = 1;
   int CATA_state = 1;
-  int CATA_pos = 270;
-  INTAKE.resetPosition();
-  CATA.resetPosition();
+
+  bool cataKEY = false;
+  bool intakeKEY1 = false;
+  bool intakeKEY2 = false;
+  bool chainKEY1 = false;
+  bool chainKEY2 = false;
+  bool wingsKEY = false;
+  bool liftKEY = false;
 
   while (1) {
     // This is the main execution loop for the user control program.
@@ -188,28 +207,37 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
-    if(Controller1.ButtonA.pressing()){
-      CATA_pos += 270;
-      CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+    cataKEY = Controller1.ButtonA.pressing();
+    intakeKEY1 = Controller1.ButtonL1.pressing();
+    intakeKEY2 = Controller1.ButtonL2.pressing();
+    chainKEY1 = Controller1.ButtonX.pressing();
+    chainKEY2 = Controller1.ButtonB.pressing();
+    wingsKEY = Controller1.ButtonR1.pressing();
+    liftKEY = Controller1.ButtonR2.pressing();
+
+    if(cataKEY){
+      //CATA_pos += 270;
+      //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+      CATA.spin(fwd, 100, percent);
       CATA_state = 0;
     }else if (CATA_state == 1){
-      CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-      CATA_state = 0;
+      //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+      //CATA_state = 0;
     }else {
       CATA.stop(hold);
     }
     
-    if(Controller1.ButtonL1.pressing()){
+    if(intakeKEY1){
       INTAKE.spin(fwd, 100, percent);
-    }else if(Controller1.ButtonL2.pressing()){
+    }else if(intakeKEY2){
       INTAKE.spin(reverse, 100, percent);
     }else{
       INTAKE.stop(coast);
     }
 
-    if(Controller1.ButtonX.pressing() && (CHAIN_state < 3)){
+    if(chainKEY1 && (CHAIN_state < 3)){
       CHAIN_state += 1;
-    }else if(Controller1.ButtonB.pressing() && (CHAIN_state > 1)){
+    }else if(chainKEY2 && (CHAIN_state > 1)){
       CHAIN_state -= 1; 
     }else{}
 
@@ -224,13 +252,13 @@ void usercontrol(void) {
       CHAIN.stop(hold);
     } else{}
 
-    if(Controller1.ButtonR1.pressing()){
+    if(wingsKEY){
       WINGS.set(true);
     } else{
       WINGS.set(false);
     }
 
-    if(Controller1.ButtonR2.pressing()){
+    if(liftKEY){
       LIFT.set(true);
     } else{
       LIFT.set(false);

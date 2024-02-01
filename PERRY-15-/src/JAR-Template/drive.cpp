@@ -359,10 +359,10 @@ void Drive::holonomic_drive_to_point(float X_position, float Y_position, float a
 
 void Drive::control_arcade(){
 
-  int driveSENS = 10;
-  int throttleVALUE = deadband(controller(primary).Axis3.value(), 5);
+  int driveSENS = 15;
+  int throttleVALUE = deadband(controller(primary).Axis3.value(), 1);
   float throttle = (throttleVALUE * abs(throttleVALUE^(driveSENS))) / abs(127^(driveSENS));
-  int turnVALUE = deadband(controller(primary).Axis1.value(), 5);
+  int turnVALUE = deadband(controller(primary).Axis1.value(), 1);
   float turn = (turnVALUE * abs(turnVALUE^(driveSENS))) / abs(127^(driveSENS));
 
   DriveL.spin(fwd, to_volt(throttle+turn), volt);

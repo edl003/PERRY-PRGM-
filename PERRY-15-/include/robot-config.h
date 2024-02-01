@@ -11,7 +11,7 @@ extern motor R1;
 extern motor R2;
 extern motor R3;
 extern motor R4;
-extern inertial Inertial9;
+extern inertial Inertial;
 extern controller Controller1;
 extern motor_group CATA;
 extern motor INTAKE;
