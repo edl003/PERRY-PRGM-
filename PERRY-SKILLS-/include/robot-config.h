@@ -11,14 +11,15 @@ extern motor R1;
 extern motor R2;
 extern motor R3;
 extern motor R4;
-extern inertial Inertial9;
+extern inertial Inertial;
 extern controller Controller1;
 extern motor_group CATA;
 extern motor INTAKE;
 extern motor CHAIN;
-extern digital_out WINGS;
-extern digital_out LIFT;
+extern digital_out LWING;
+extern digital_out RWING;
 extern digital_out BLOCKER;
+extern digital_out LIFT;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

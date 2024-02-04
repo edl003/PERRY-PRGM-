@@ -62,48 +62,94 @@ void tune_PID(){
   // chassis.left_swing_to_angle(360);
 }
 
-void left_auto(){
+void close_auto(){
   odom_constants();
   chassis.set_coordinates(0, 0, 0);
 
   //first section
-  chassis.drive_to_point(7.5,35);
-  chassis.turn_to_point(50,31);
+  chassis.drive_to_point(5,-22);
+  chassis.turn_to_point(20,-21);
+  chassis.drive_distance(10);
+  chassis.turn_to_point(17,-35);
+  chassis.drive_distance(20);
+  chassis.drive_distance(-20);
+  // //second section
+  chassis.turn_to_point(30,-27);
+  wait(1000,msec);
+  chassis.drive_distance(20);
+  chassis.turn_to_point(25,-35);
+  // chassis.drive_distance(15);
+  // //match load
+  // chassis.turn_to_point(-8,-5);
+  // chassis.drive_to_point(-8,-5);
+  // wait(1000, msec);
+  // chassis.drive_distance(15);
+  // wait(1000, msec);
+  // chassis.drive_distance(-12);
+}
+
+void far_auto(){
+  odom_constants();
+  chassis.set_coordinates(0, 0, 0);
+
+  //highway
+  chassis.drive_to_point(1,52);
+  chassis.right_swing_to_angle(-45);
+
+  //goal
+  chassis.drive_distance(24);
+  chassis.turn_to_point(-40,80);
   chassis.drive_distance(15);
   chassis.drive_distance(-15);
-  //second section
-  chassis.turn_to_point(10.5,52);
-  chassis.drive_distance(20);
-  chassis.turn_to_point(50,45);
-  chassis.drive_distance(15);
-  //match load
-  chassis.turn_to_point(-8,-5);
-  chassis.drive_to_point(-8,-5);
-  wait(1000, msec);
-  chassis.drive_distance(15);
-  wait(1000, msec);
-  chassis.drive_distance(-12);
+
+  //middle
+  chassis.turn_to_point(-28, 60);
+}
+
+void left_skills_auto(){
+  odom_constants();
+  chassis.set_coordinates(0, 0, 0);
+  chassis.left_swing_to_angle(46);
+
   //highway
-  chassis.turn_to_point(50,-55);
-  chassis.drive_distance(17);
-  chassis.turn_to_point(30,-21);
-  chassis.drive_to_point(29,-23);
+  chassis.drive_distance(-10);
+  chassis.turn_to_point(-5,-10);
+  chassis.drive_distance(18);
+  chassis.turn_to_point(4,-85);
+  chassis.drive_to_point(4,-85);
+
+  //goal
+  chassis.left_swing_to_angle(225);
+  chassis.drive_distance(24);
+  chassis.turn_to_point(-20,-102);
+  chassis.drive_distance(15);
+  chassis.drive_distance(-15);
+  
+  //middle
+  chassis.turn_to_point(-20, -60);
 }
 
-void right_auto(){
+void right_skills_auto(){
   odom_constants();
   chassis.set_coordinates(0, 0, 0);
-  chassis.drive_to_point(7.5, 61.3);
-  chassis.turn_to_point(17, 60);
-  chassis.drive_distance(4);
-}
+  chassis.right_swing_to_angle(-46);
 
-void skills_auto(){
-  odom_constants();
-  chassis.set_coordinates(0, 0, 0);
-  chassis.drive_to_point(7.5, 61.3);
-  chassis.turn_to_point(17, 60);
-  chassis.drive_distance(4);
+  //highway
+  chassis.drive_distance(-10);
+  chassis.turn_to_point(-5,-5);
+  chassis.drive_distance(18);
+  chassis.turn_to_point(-10,-85);
+  chassis.drive_to_point(-10,-85);
+
+  //goal
+  chassis.right_swing_to_angle(135);
+  chassis.drive_distance(24);
+  chassis.turn_to_point(20,-100);
+  chassis.drive_distance(15);
+  chassis.drive_distance(-15);
+  
+  //middle
+  chassis.turn_to_point(20, -60);
 }
 
 // code below is just example code (may be helpful for future)

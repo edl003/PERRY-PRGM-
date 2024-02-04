@@ -23,9 +23,10 @@ motor CATAMotorB = motor(PORT19, ratio18_1, false);
 motor_group CATA = motor_group(CATAMotorA, CATAMotorB);
 motor INTAKE = motor(PORT18, ratio18_1, false);
 motor CHAIN = motor(PORT17, ratio18_1, false);
-digital_out WINGS = digital_out(Brain.ThreeWirePort.A);
-digital_out LIFT = digital_out(Brain.ThreeWirePort.B);
+digital_out LWING = digital_out(Brain.ThreeWirePort.A);
+digital_out RWING = digital_out(Brain.ThreeWirePort.B);
 digital_out BLOCKER = digital_out(Brain.ThreeWirePort.C);
+digital_out LIFT = digital_out(Brain.ThreeWirePort.D);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

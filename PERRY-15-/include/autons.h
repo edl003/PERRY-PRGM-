@@ -9,9 +9,10 @@ void default_constants();
 
 void tune_PID();
 
-void left_auto();
-void right_auto();
-void skills_auto();
+void close_auto();
+void far_auto();
+void left_skills_auto();
+void right_skills_auto();
 
 // code below is just example code (may be helpful for future)
 

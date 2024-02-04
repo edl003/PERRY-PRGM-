@@ -16,16 +16,17 @@ motor R1 = motor(PORT5, ratio6_1, false);
 motor R2 = motor(PORT6, ratio6_1, false);
 motor R3 = motor(PORT7, ratio6_1, true);
 motor R4 = motor(PORT8, ratio6_1, true);
-inertial Inertial9 = inertial(PORT9);
+inertial Inertial = inertial(PORT9);
 controller Controller1 = controller(primary);
 motor CATAMotorA = motor(PORT20, ratio18_1, true);
 motor CATAMotorB = motor(PORT19, ratio18_1, false);
 motor_group CATA = motor_group(CATAMotorA, CATAMotorB);
 motor INTAKE = motor(PORT18, ratio18_1, false);
 motor CHAIN = motor(PORT17, ratio18_1, false);
-digital_out WINGS = digital_out(Brain.ThreeWirePort.A);
-digital_out LIFT = digital_out(Brain.ThreeWirePort.B);
+digital_out LWING = digital_out(Brain.ThreeWirePort.A);
+digital_out RWING = digital_out(Brain.ThreeWirePort.B);
 digital_out BLOCKER = digital_out(Brain.ThreeWirePort.C);
+digital_out LIFT = digital_out(Brain.ThreeWirePort.D);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

@@ -16,9 +16,10 @@
 // CATA                 motor_group   20, 19          
 // INTAKE               motor         18              
 // CHAIN                motor         17              
-// WINGS                digital_out   A               
-// LIFT                 digital_out   B               
+// LWING                digital_out   A               
+// RWING                digital_out   B               
 // BLOCKER              digital_out   C               
+// LIFT                 digital_out   D               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 using namespace vex;
@@ -114,7 +115,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 1;
+int current_auton_selection = 2;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -137,19 +138,21 @@ void pre_auton(void) {
         Brain.Screen.printAt(50, 50, "TUNE PID");
         break;
       case 1:
-        Brain.Screen.printAt(50, 50, "LEFT AUTO");
+        Brain.Screen.printAt(50, 50, "CLOSE AUTO");
         break;
       case 2:
-        Brain.Screen.printAt(50, 50, "RIGHT AUTO");
+        Brain.Screen.printAt(50, 50, "FAR AUTO");
         break;
       case 3:
-        Brain.Screen.printAt(50, 50, "SKILLS");
+        Brain.Screen.printAt(50, 50, "LEFT SKILLS AUTO");
         break;
+      case 4:
+        Brain.Screen.printAt(50, 50, "RIGHT SKILLS AUTO");
     }
     if(Brain.Screen.pressing()){
       while(Brain.Screen.pressing()) {}
       current_auton_selection ++;
-    } else if (current_auton_selection == 4){
+    } else if (current_auton_selection == 5){
       current_auton_selection = 0;
     }
     task::sleep(10);
@@ -163,13 +166,16 @@ void autonomous(void) {
       tune_PID();
       break;        
     case 1:         
-      left_auto();
+      close_auto();
       break;
     case 2:
-      right_auto();
+      far_auto();
       break;
     case 3:
-      skills_auto();
+      left_skills_auto();
+      break;
+    case 4:
+      right_skills_auto();
       break;
  }
 }
@@ -253,9 +259,11 @@ void usercontrol(void) {
     } else{}
 
     if(wingsKEY){
-      WINGS.set(true);
+      LWING.set(true);
+      RWING.set(true);
     } else{
-      WINGS.set(false);
+      LWING.set(false);
+      RWING.set(false);
     }
 
     if(liftKEY){
