@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "cmath"
 
 Drive::Drive(enum::drive_setup drive_setup, motor_group DriveL, motor_group DriveR, int gyro_port, float wheel_diameter, float wheel_ratio, float gyro_scale, int DriveLF_port, int DriveRF_port, int DriveLB_port, int DriveRB_port, int ForwardTracker_port, float ForwardTracker_diameter, float ForwardTracker_center_distance, int SidewaysTracker_port, float SidewaysTracker_diameter, float SidewaysTracker_center_distance) :
   wheel_diameter(wheel_diameter),
@@ -358,20 +359,28 @@ void Drive::holonomic_drive_to_point(float X_position, float Y_position, float a
 }
 
 void Drive::control_arcade(){
+  // int driveSENS = 15;
+  // int throttleVALUE = controller(primary).Axis3.value();
+  // float throttle = (throttleVALUE * abs(throttleVALUE^(driveSENS))) / abs(127^(driveSENS));
 
-  int driveSENS = 15;
-  int throttleVALUE = controller(primary).Axis3.value();
-  float throttle = (throttleVALUE * abs(throttleVALUE^(driveSENS))) / abs(127^(driveSENS));
+  // int turnSENS = 15;
+  // int turnVALUE = controller(primary).Axis1.value();
+  // float turn = (turnVALUE * abs(turnVALUE^(turnSENS))) / abs(127^(turnSENS));
 
-  int turnSENS = 15;
-  int turnVALUE = controller(primary).Axis1.value();
-  float turn = (turnVALUE * abs(turnVALUE^(turnSENS))) / abs(127^(turnSENS));
+  // // float throttle = deadband(controller(primary).Axis3.value(), 1);
+  // // float turn = deadband(controller(primary).Axis1.value(), 1);
 
-  // float throttle = deadband(controller(primary).Axis3.value(), 1);
-  // float turn = deadband(controller(primary).Axis1.value(), 1);
+  // DriveL.spin(fwd, to_volt(throttle+turn), volt);
+  // DriveR.spin(fwd, to_volt(throttle-turn), volt);
 
-  DriveL.spin(fwd, to_volt(throttle+turn), volt);
-  DriveR.spin(fwd, to_volt(throttle-turn), volt);
+  double turnImportance = 0.5;
+  double turnVal = controller(primary).Axis1.position();
+  double forwardVal = controller(primary).Axis3.position();
+  double turnVolts = turnVal * -0.11;
+  double forwardVolts = forwardVal * 0.11 * (1 - (std :: abs(turnVolts) / 11.0) * turnImportance);
+
+  DriveL.spin(fwd, forwardVolts-turnVolts, volt);
+  DriveR.spin(fwd, forwardVolts+turnVolts, volt);
 
 }
 

@@ -115,7 +115,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 2;
+int current_auton_selection = 3;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -224,7 +224,7 @@ void usercontrol(void) {
     if(cataKEY){
       //CATA_pos += 270;
       //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-      CATA.spin(fwd, 100, percent);
+      CATA.spin(fwd, 11, volt);
       CATA_state = 0;
     }else if (CATA_state == 1){
       //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
@@ -234,9 +234,9 @@ void usercontrol(void) {
     }
     
     if(intakeKEY1){
-      INTAKE.spin(fwd, 100, percent);
+      INTAKE.spin(fwd, 11, volt);
     }else if(intakeKEY2){
-      INTAKE.spin(reverse, 100, percent);
+      INTAKE.spin(reverse, 11, volt);
     }else{
       INTAKE.stop(coast);
     }
