@@ -60,7 +60,7 @@ motor_group(L1, L2, L3, L4),
 motor_group(R1, R2, R3, R4),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT9,
+PORT16,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
 2.75,
@@ -115,7 +115,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 3;
+int current_auton_selection = 1;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -128,8 +128,8 @@ void pre_auton(void) {
     wait(100, msec);
   }
 
-  INTAKE.resetPosition();
-  CATA.resetPosition();
+  CHAIN.resetPosition();
+  //CATA.resetPosition();
 
   while(auto_started == false){            //Changing the names below will only change their names on the
     Brain.Screen.clearScreen();            //brain screen for auton selection.
@@ -193,15 +193,18 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   int CHAIN_state = 1;
-  int CATA_state = 1;
+  int CHAIN_speed = 180;
+  //int CATA_state = 1;
 
   bool cataKEY = false;
   bool intakeKEY1 = false;
   bool intakeKEY2 = false;
   bool chainKEY1 = false;
   bool chainKEY2 = false;
+  bool chainSHIFT = false;
   bool wingsKEY = false;
-  bool liftKEY = false;
+  bool liftKEY1 = false;
+  bool liftKEY2 = false;
 
   while (1) {
     // This is the main execution loop for the user control program.
@@ -216,47 +219,60 @@ void usercontrol(void) {
     cataKEY = Controller1.ButtonA.pressing();
     intakeKEY1 = Controller1.ButtonL1.pressing();
     intakeKEY2 = Controller1.ButtonL2.pressing();
-    chainKEY1 = Controller1.ButtonX.pressing();
-    chainKEY2 = Controller1.ButtonB.pressing();
-    wingsKEY = Controller1.ButtonR1.pressing();
-    liftKEY = Controller1.ButtonR2.pressing();
+    chainKEY1 = Controller1.ButtonR1.pressing();
+    chainKEY2 = Controller1.ButtonR2.pressing();
+    chainSHIFT = Controller1.ButtonX.pressing();
+    wingsKEY = Controller1.ButtonA.pressing();
+    liftKEY1 = Controller1.ButtonUp.pressing();
+    liftKEY2 = Controller1.ButtonDown.pressing();
 
-    if(cataKEY){
-      //CATA_pos += 270;
-      //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-      CATA.spin(fwd, 11, volt);
-      CATA_state = 0;
-    }else if (CATA_state == 1){
-      //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-      //CATA_state = 0;
-    }else {
-      CATA.stop(hold);
-    }
+    // if(cataKEY){
+    //   //CATA_pos += 270;
+    //   //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+    //   CATA.spin(fwd, 11, volt);
+    //   CATA_state = 0;
+    // }else if (CATA_state == 1){
+    //   //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
+    //   //CATA_state = 0;
+    // }else {
+    //   CATA.stop(hold);
+    // }
     
     if(intakeKEY1){
-      INTAKE.spin(fwd, 11, volt);
-    }else if(intakeKEY2){
       INTAKE.spin(reverse, 11, volt);
+    }else if(intakeKEY2){
+      INTAKE.spin(fwd, 11, volt);
     }else{
       INTAKE.stop(coast);
     }
 
-    if(chainKEY1 && (CHAIN_state < 3)){
-      CHAIN_state += 1;
-    }else if(chainKEY2 && (CHAIN_state > 1)){
-      CHAIN_state -= 1; 
-    }else{}
+    // if(chainKEY1){
+    //   CHAIN.spin(reverse, 11, volt);
+    // }else if(chainKEY2){
+    //   CHAIN.spin(fwd, 11, volt);
+    // }else{
+    //   CHAIN.stop(hold);
+    // }
 
-    if (CHAIN_state == 1){
-      CHAIN.spinToPosition(90, degrees);
-      CHAIN.stop(hold);
-    } else if (CHAIN_state == 2){
-      CHAIN.spinToPosition(180, degrees);
-      CHAIN.stop(hold);
-    } else if (CHAIN_state == 3){
-      CHAIN.spinToPosition(270, degrees);
-      CHAIN.stop(hold);
+    if(chainSHIFT && chainKEY2 && (CHAIN_state < 3)){
+      CHAIN_state += 1;
+    } else if(chainSHIFT && chainKEY1 && (CHAIN_state > 1)){
+      CHAIN_state -= 1; 
     } else{}
+
+    if (chainSHIFT && (CHAIN_state == 1)){
+      CHAIN.spinToPosition(90, degrees, CHAIN_speed, rpm, false);
+    } else if (chainSHIFT && (CHAIN_state == 2)){
+      CHAIN.spinToPosition(470, degrees, CHAIN_speed, rpm, true);
+    } else if (chainSHIFT && (CHAIN_state == 3)){
+      CHAIN.spinToPosition(700, degrees, CHAIN_speed, rpm, false);
+    } else if (chainKEY1){
+      CHAIN.spin(reverse, CHAIN_speed, rpm);
+    } else if (chainKEY2){
+      CHAIN.spin(fwd, CHAIN_speed, rpm);
+    } else{
+      CHAIN.stop(hold);
+    }
 
     if(wingsKEY){
       LWING.set(true);
@@ -266,10 +282,12 @@ void usercontrol(void) {
       RWING.set(false);
     }
 
-    if(liftKEY){
-      LIFT.set(true);
-    } else{
-      LIFT.set(false);
+    if(liftKEY1){
+      LLIFT.set(true);
+      RLIFT.set(true);
+    } else if(liftKEY2){
+      LLIFT.set(false);
+      RLIFT.set(false);
     }
 
     //Replace this line with chassis.control_tank(); for tank drive 
