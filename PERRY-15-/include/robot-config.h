@@ -19,6 +19,8 @@ extern digital_out LWING;
 extern digital_out RWING;
 extern digital_out LLIFT;
 extern digital_out RLIFT;
+extern limit LIMIT;
+extern motor_group CATA;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

@@ -24,6 +24,10 @@ digital_out LWING = digital_out(Brain.ThreeWirePort.H);
 digital_out RWING = digital_out(Brain.ThreeWirePort.G);
 digital_out LLIFT = digital_out(Brain.ThreeWirePort.F);
 digital_out RLIFT = digital_out(Brain.ThreeWirePort.E);
+limit LIMIT = limit(Brain.ThreeWirePort.D);
+motor CATAMotorA = motor(PORT13, ratio36_1, true);
+motor CATAMotorB = motor(PORT14, ratio36_1, false);
+motor_group CATA = motor_group(CATAMotorA, CATAMotorB);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

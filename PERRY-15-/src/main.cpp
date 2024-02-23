@@ -129,7 +129,6 @@ void pre_auton(void) {
   }
 
   CHAIN.resetPosition();
-  //CATA.resetPosition();
 
   while(auto_started == false){            //Changing the names below will only change their names on the
     Brain.Screen.clearScreen();            //brain screen for auton selection.
@@ -194,15 +193,24 @@ void usercontrol(void) {
   // User control code here, inside the loop
   int CHAIN_state = 1;
   int CHAIN_speed = 180;
-  //int CATA_state = 1;
+  //int CHAIN_shift = 0;
+  int LWING_state = 0;
+  int RWING_state = 0;
 
-  bool cataKEY = false;
+  bool cataKEY1 = false;
+  bool cataKEY2 = false;
+  
   bool intakeKEY1 = false;
   bool intakeKEY2 = false;
+
   bool chainKEY1 = false;
   bool chainKEY2 = false;
   bool chainSHIFT = false;
+
   bool wingsKEY = false;
+  bool wingsLKEY = false;
+  bool wingsRKEY = false;
+
   bool liftKEY1 = false;
   bool liftKEY2 = false;
 
@@ -216,27 +224,35 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
-    cataKEY = Controller1.ButtonA.pressing();
-    intakeKEY1 = Controller1.ButtonL1.pressing();
-    intakeKEY2 = Controller1.ButtonL2.pressing();
-    chainKEY1 = Controller1.ButtonR1.pressing();
-    chainKEY2 = Controller1.ButtonR2.pressing();
+    cataKEY1 = Controller1.ButtonA.pressing();
+    cataKEY2 = Controller1.ButtonB.pressing();
+
+    intakeKEY1 = Controller1.ButtonR1.pressing();
+    intakeKEY2 = Controller1.ButtonR2.pressing();
+    
+    chainKEY1 = Controller1.ButtonL1.pressing();
+    chainKEY2 = Controller1.ButtonL2.pressing();
     chainSHIFT = Controller1.ButtonX.pressing();
-    wingsKEY = Controller1.ButtonA.pressing();
+    
+    wingsKEY = Controller1.ButtonL1.pressing();
+    wingsLKEY = Controller1.ButtonLeft.pressing();
+    wingsRKEY = Controller1.ButtonRight.pressing();
+
     liftKEY1 = Controller1.ButtonUp.pressing();
     liftKEY2 = Controller1.ButtonDown.pressing();
 
-    // if(cataKEY){
-    //   //CATA_pos += 270;
-    //   //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-    //   CATA.spin(fwd, 11, volt);
-    //   CATA_state = 0;
-    // }else if (CATA_state == 1){
-    //   //CATA.spinToPosition(CATA_pos, degrees, 600, rpm, true);
-    //   //CATA_state = 0;
-    // }else {
-    //   CATA.stop(hold);
-    // }
+
+    if(LIMIT.pressing()==false){
+      wait(250, msec);
+      CATA.spin(forward, 11.0, voltageUnits::volt);
+    }else if(cataKEY1){
+      CATA.spin(forward, 11.0, voltageUnits::volt);
+    }else if(cataKEY2){
+      CATA.resetPosition();
+      CATA.spinToPosition(270, degrees, 550, rpm, true);
+    }else{
+      CATA.stop(hold);
+    }
     
     if(intakeKEY1){
       INTAKE.spin(reverse, 11, volt);
@@ -246,19 +262,11 @@ void usercontrol(void) {
       INTAKE.stop(coast);
     }
 
-    // if(chainKEY1){
-    //   CHAIN.spin(reverse, 11, volt);
-    // }else if(chainKEY2){
-    //   CHAIN.spin(fwd, 11, volt);
-    // }else{
-    //   CHAIN.stop(hold);
-    // }
-
     if(chainSHIFT && chainKEY2 && (CHAIN_state < 3)){
       CHAIN_state += 1;
     } else if(chainSHIFT && chainKEY1 && (CHAIN_state > 1)){
       CHAIN_state -= 1; 
-    } else{}
+    }
 
     if (chainSHIFT && (CHAIN_state == 1)){
       CHAIN.spinToPosition(90, degrees, CHAIN_speed, rpm, false);
@@ -274,12 +282,32 @@ void usercontrol(void) {
       CHAIN.stop(hold);
     }
 
-    if(wingsKEY){
+    if(wingsKEY && (LWING_state == 0) && (RWING_state == 0)){
       LWING.set(true);
       RWING.set(true);
-    } else{
+      LWING_state = 1;
+      RWING_state = 1;
+    } else if (wingsKEY && (LWING_state == 1) && (RWING_state == 1)){
       LWING.set(false);
       RWING.set(false);
+      LWING_state = 0;
+      RWING_state = 0;
+    }
+
+    if(wingsLKEY && (LWING_state == 0)){
+      LWING.set(true);
+      LWING_state = 1;
+    } else if (wingsLKEY && (LWING_state == 1)){
+      LWING.set(false);
+      LWING_state = 0;
+    }
+
+    if(wingsRKEY && (RWING_state == 0)){
+      RWING.set(true);
+      RWING_state = 1;
+    } else if (wingsRKEY && (RWING_state == 1)){
+      RWING.set(false);
+      RWING_state = 0;
     }
 
     if(liftKEY1){
