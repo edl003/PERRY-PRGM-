@@ -1,3 +1,4 @@
+
 #include "vex.h"
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
@@ -191,28 +192,35 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
-  int CHAIN_state = 1;
   int CHAIN_speed = 180;
-  //int CHAIN_shift = 0;
-  int LWING_state = 0;
-  int RWING_state = 0;
+  int CATA_state = 0;
+
+  bool wingsToggle = false;
+  bool wingsButton = false;
+
+  bool wingLToggle = false;
+  bool wingLButton = false;
+
+  bool wingRToggle = false;
+  bool wingRButton = false;
+
+  bool liftToggle = false;
+  bool liftButton = false; 
 
   bool cataKEY1 = false;
   bool cataKEY2 = false;
-  
+
   bool intakeKEY1 = false;
   bool intakeKEY2 = false;
 
   bool chainKEY1 = false;
   bool chainKEY2 = false;
-  bool chainSHIFT = false;
 
   bool wingsKEY = false;
   bool wingsLKEY = false;
   bool wingsRKEY = false;
 
-  bool liftKEY1 = false;
-  bool liftKEY2 = false;
+  bool liftKEY = false;
 
   while (1) {
     // This is the main execution loop for the user control program.
@@ -225,31 +233,29 @@ void usercontrol(void) {
     // ........................................................................
 
     cataKEY1 = Controller1.ButtonA.pressing();
-    cataKEY2 = Controller1.ButtonB.pressing();
+    cataKEY2 = Controller1.ButtonY.pressing();
 
     intakeKEY1 = Controller1.ButtonR1.pressing();
     intakeKEY2 = Controller1.ButtonR2.pressing();
     
     chainKEY1 = Controller1.ButtonL1.pressing();
     chainKEY2 = Controller1.ButtonL2.pressing();
-    chainSHIFT = Controller1.ButtonX.pressing();
     
-    wingsKEY = Controller1.ButtonL1.pressing();
+    wingsKEY = Controller1.ButtonX.pressing();
     wingsLKEY = Controller1.ButtonLeft.pressing();
     wingsRKEY = Controller1.ButtonRight.pressing();
 
-    liftKEY1 = Controller1.ButtonUp.pressing();
-    liftKEY2 = Controller1.ButtonDown.pressing();
+    liftKEY = Controller1.ButtonUp.pressing();
 
+    if(cataKEY2){
+      CATA_state = 1;
+    }
 
-    if(LIMIT.pressing()==false){
+    if((LIMIT.pressing()==false) && (CATA_state == 0)){
       wait(250, msec);
-      CATA.spin(forward, 11.0, voltageUnits::volt);
+      CATA.spin(fwd, 9, volt);
     }else if(cataKEY1){
-      CATA.spin(forward, 11.0, voltageUnits::volt);
-    }else if(cataKEY2){
-      CATA.resetPosition();
-      CATA.spinToPosition(270, degrees, 550, rpm, true);
+      CATA.spin(fwd, 9, volt);
     }else{
       CATA.stop(hold);
     }
@@ -257,24 +263,12 @@ void usercontrol(void) {
     if(intakeKEY1){
       INTAKE.spin(reverse, 11, volt);
     }else if(intakeKEY2){
-      INTAKE.spin(fwd, 11, volt);
+      INTAKE.spin(fwd, 11, volt); 
     }else{
-      INTAKE.stop(coast);
+      INTAKE.spin(reverse, 2, volt);
     }
 
-    if(chainSHIFT && chainKEY2 && (CHAIN_state < 3)){
-      CHAIN_state += 1;
-    } else if(chainSHIFT && chainKEY1 && (CHAIN_state > 1)){
-      CHAIN_state -= 1; 
-    }
-
-    if (chainSHIFT && (CHAIN_state == 1)){
-      CHAIN.spinToPosition(90, degrees, CHAIN_speed, rpm, false);
-    } else if (chainSHIFT && (CHAIN_state == 2)){
-      CHAIN.spinToPosition(470, degrees, CHAIN_speed, rpm, true);
-    } else if (chainSHIFT && (CHAIN_state == 3)){
-      CHAIN.spinToPosition(700, degrees, CHAIN_speed, rpm, false);
-    } else if (chainKEY1){
+    if (chainKEY1){
       CHAIN.spin(reverse, CHAIN_speed, rpm);
     } else if (chainKEY2){
       CHAIN.spin(fwd, CHAIN_speed, rpm);
@@ -282,38 +276,54 @@ void usercontrol(void) {
       CHAIN.stop(hold);
     }
 
-    if(wingsKEY && (LWING_state == 0) && (RWING_state == 0)){
+    if ((wingsKEY && !wingsButton)){
+      wingsButton = true; 
+      wingsToggle = !wingsToggle;
+    }
+    else if ((!wingsKEY)) wingsButton = false;
+
+    if (wingsToggle){
       LWING.set(true);
       RWING.set(true);
-      LWING_state = 1;
-      RWING_state = 1;
-    } else if (wingsKEY && (LWING_state == 1) && (RWING_state == 1)){
+    } else if (!wingsToggle) {
       LWING.set(false);
       RWING.set(false);
-      LWING_state = 0;
-      RWING_state = 0;
     }
 
-    if(wingsLKEY && (LWING_state == 0)){
+    if ((wingsLKEY && !wingLButton)){
+      wingLButton = true; 
+      wingLToggle = !wingLToggle;
+    }
+    else if ((!wingsLKEY)) wingLButton = false;
+
+    if (wingLToggle){
       LWING.set(true);
-      LWING_state = 1;
-    } else if (wingsLKEY && (LWING_state == 1)){
+    } else if (!wingLToggle && !wingsToggle) {
       LWING.set(false);
-      LWING_state = 0;
     }
 
-    if(wingsRKEY && (RWING_state == 0)){
+    if ((wingsRKEY && !wingRButton)){
+      wingRButton = true; 
+      wingRToggle = !wingRToggle;
+    }
+    else if ((!wingsRKEY)) wingRButton = false; 
+
+    if (wingRToggle){
       RWING.set(true);
-      RWING_state = 1;
-    } else if (wingsRKEY && (RWING_state == 1)){
+    } else if (!wingRToggle && !wingsToggle) {
       RWING.set(false);
-      RWING_state = 0;
     }
 
-    if(liftKEY1){
+    if (liftKEY && !liftButton){
+      liftButton = true; 
+      liftToggle = !liftToggle;
+    }
+    else if (!liftKEY) liftButton = false;
+
+    if (liftToggle){
       LLIFT.set(true);
       RLIFT.set(true);
-    } else if(liftKEY2){
+    } else {
       LLIFT.set(false);
       RLIFT.set(false);
     }
