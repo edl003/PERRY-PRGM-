@@ -79,9 +79,9 @@ void close_auto(){
 
   // first section
   INTAKE.spin(reverse, 11, volt);
-  chassis.drive_to_point(6,36);
+  chassis.drive_to_point(7,37);
   wait(1000, msec);
-  chassis.turn_to_point(20,32);
+  chassis.turn_to_point(20,37);
   chassis.drive_distance(10);
   INTAKE.spin(fwd, 11, volt);
   chassis.drive_distance(10);
@@ -115,7 +115,7 @@ void close_auto(){
   LWING.set(true);
   RWING.set(true);
   wait(100, msec);
-  for (int i = 0; i < 1; i++) { //22 for matchload
+  for (int i = 0; i < 5; i++) { //22 for matchload
     chassis.drive_distance(-8);
     wait(100, msec);
     chassis.drive_distance(8);
@@ -157,6 +157,17 @@ void close_auto(){
   chassis.drive_distance(14);
   chassis.drive_distance(-14);
   chassis.drive_distance(14);
+
+  //go back to other side
+  LWING.set(false);
+  chassis.right_swing_to_angle(-135);
+  // chassis.drive_distance(15);
+  // chassis.right_swing_to_angle(-90);
+  // chassis.drive_distance(20);
+  // chassis.drive_distance(20);
+  // chassis.drive_distance(20);
+  
+
 
 
   // //first section
@@ -444,6 +455,10 @@ void right_skills_auto(){
     CATA.spin(fwd, 8, volt);
   }
   CATA.stop(coast);
+
+  CHAIN.spin(fwd, 180, rpm);
+  wait(300, msec);
+  CHAIN.stop(hold);
 
   LWING.set(true);
   RWING.set(true);
