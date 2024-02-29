@@ -116,7 +116,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 3;
+int current_auton_selection = 1;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -190,6 +190,9 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+
+  //driver_skills();
+
   int CHAIN_speed = 180;
   int CATA_state = 0;
 
@@ -251,11 +254,11 @@ void usercontrol(void) {
 
     if((LIMIT.pressing()==false) && (CATA_state == 0)){
       wait(250, msec);
-      CATA.spin(fwd, 9, volt);
+      CATA.spin(fwd, 8, volt);
     }else if(cataKEY1){
-      CATA.spin(fwd, 9, volt);
+      CATA.spin(fwd, 8, volt);
     }else{
-      CATA.stop(hold);
+      CATA.stop(coast);
     }
     
     if(intakeKEY1){

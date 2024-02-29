@@ -68,9 +68,45 @@ void close_auto(){
   chassis.set_coordinates(0, 0, 0);
   chassis.drive_max_voltage = 9;
 
+  while((LIMIT.pressing()==false)){
+    CATA.spin(fwd, 8, volt);
+  }
+  CATA.stop(coast);
+
+  CHAIN.spin(fwd, 180, rpm);
+  wait(300, msec);
+  CHAIN.stop(hold);
+
   // first section
+  INTAKE.spin(reverse, 11, volt);
+  chassis.drive_to_point(6,36);
+  wait(1000, msec);
+  chassis.turn_to_point(20,32);
+  chassis.drive_distance(10);
+  INTAKE.spin(fwd, 11, volt);
+  chassis.drive_distance(10);
+  wait(500, msec);
+  INTAKE.spin(reverse, 11, volt);
+  INTAKE.spin(fwd, 11, volt);
+  chassis.drive_distance(-15);
 
   // match load area
+
+  wait(100, msec);
+  INTAKE.spin(reverse, 11, volt);
+  INTAKE.spin(fwd, 11, volt);
+  INTAKE.stop(coast);
+  chassis.turn_to_point(-20,-5);
+  chassis.drive_to_point(-20,-5);
+  chassis.drive_distance(10);
+  chassis.drive_max_voltage = 4;
+  chassis.drive_distance(-10);
+  chassis.left_swing_to_angle(-90);
+  chassis.drive_distance(-5);
+  chassis.left_swing_to_angle(-60);
+  chassis.drive_distance(10);
+  chassis.left_swing_to_angle(-43);
+  chassis.drive_distance(-6);
 
   // match loading
 
@@ -79,37 +115,40 @@ void close_auto(){
   LWING.set(true);
   RWING.set(true);
   wait(100, msec);
-  for (int i = 0; i < 5; i++) { //21 for skills or 5 for matches
+  for (int i = 0; i < 1; i++) { //22 for matchload
     chassis.drive_distance(-8);
     wait(100, msec);
     chassis.drive_distance(8);
     wait(200, msec);
   }
+
+  float adjustment = 49;
+
   RWING.set(false);
   chassis.drive_distance(-8);
-  chassis.right_swing_to_angle(-18);
+  chassis.right_swing_to_angle(-18 - adjustment);
   LWING.set(false);
   wait(100, msec);
   chassis.drive_max_voltage = 4;
   chassis.drive_distance(-24);
-  chassis.right_swing_to_angle(-33);
+  chassis.right_swing_to_angle(-33 - adjustment);
   LWING.set(true);
   wait(100, msec);
 
-  chassis.drive_distance(-24);
-  chassis.right_swing_to_angle(-44);
+  chassis.drive_distance(-24 - adjustment);
+  chassis.right_swing_to_angle(-44 - adjustment);
   chassis.drive_distance(-20);
   chassis.drive_distance(-20);
   chassis.drive_distance(-24);
 
-  chassis.right_swing_to_angle(-60);
+  chassis.right_swing_to_angle(-60 - adjustment);
   chassis.drive_distance(-20);
-  chassis.right_swing_to_angle(-85);
+  chassis.right_swing_to_angle(-85 - adjustment);
   chassis.drive_distance(-20);
   chassis.drive_distance(-4);
-  chassis.right_swing_to_angle(-105);
+  chassis.right_swing_to_angle(-105 - adjustment);
   chassis.drive_distance(-4);
-  chassis.right_swing_to_angle(-135);
+  chassis.right_swing_to_angle(-135 - adjustment);
 
   chassis.drive_max_voltage = 11;
   chassis.drive_distance(-14);
@@ -233,8 +272,8 @@ void far_auto(){
 
   chassis.drive_max_voltage = 11;
   chassis.drive_distance(-20);
-  chassis.drive_distance(-20);
   chassis.drive_distance(20);
+  chassis.drive_distance(-20);
   chassis.drive_distance(25);
 
   // //highway
@@ -281,12 +320,14 @@ void left_skills_auto(){
   LWING.set(true);
   RWING.set(true);
   wait(100, msec);
+
   for (int i = 0; i < 1; i++) { //22 for matchload
     chassis.drive_distance(-8);
     wait(100, msec);
     chassis.drive_distance(8);
     wait(200, msec);
   }
+
   LWING.set(false);
   chassis.drive_distance(-8);
   chassis.left_swing_to_angle(18);
@@ -349,8 +390,8 @@ void left_skills_auto(){
 
   chassis.drive_max_voltage = 11;
   chassis.drive_distance(-20);
-  chassis.drive_distance(-20);
   chassis.drive_distance(20);
+  chassis.drive_distance(-20);
   chassis.drive_distance(25);
 
 
@@ -398,6 +439,11 @@ void right_skills_auto(){
   chassis.set_coordinates(0, 0, 0);
 
   chassis.drive_max_voltage = 9;
+
+  while((LIMIT.pressing()==false)){
+    CATA.spin(fwd, 8, volt);
+  }
+  CATA.stop(coast);
 
   LWING.set(true);
   RWING.set(true);
@@ -469,8 +515,8 @@ void right_skills_auto(){
 
   chassis.drive_max_voltage = 11;
   chassis.drive_distance(-20);
-  chassis.drive_distance(-20);
   chassis.drive_distance(20);
+  chassis.drive_distance(-20);
   chassis.drive_distance(25);
 
 
@@ -519,6 +565,30 @@ void right_skills_auto(){
   // chassis.drive_distance(15);
   // chassis.drive_distance(-15);
   // chassis.drive_distance(15);
+}
+
+void driver_skills(){
+  odom_constants();
+  chassis.set_coordinates(0, 0, 0);
+
+  chassis.drive_max_voltage = 9;
+
+  while((LIMIT.pressing()==false)){
+    CATA.spin(fwd, 8, volt);
+  }
+  CATA.stop(coast);
+
+  LWING.set(true);
+  RWING.set(true);
+  wait(100, msec);
+  for (int i = 0; i < 1; i++) { //22 for matchload
+    chassis.drive_distance(-8);
+    wait(100, msec);
+    chassis.drive_distance(8);
+    wait(200, msec);
+  }
+  RWING.set(false);
+  LWING.set(false);
 }
 
 // code below is just example code (may be helpful for future)
