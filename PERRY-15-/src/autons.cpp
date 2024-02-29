@@ -147,94 +147,243 @@ void left_skills_auto(){
   odom_constants();
   chassis.set_coordinates(0, 0, 0);
 
-  chassis.drive_max_voltage = 11;
-  chassis.left_swing_to_angle(48);
-  wait(1000,msec);
+  chassis.drive_max_voltage = 9;
 
-  // //highway
-  chassis.left_swing_to_angle(-20);
-  chassis.drive_distance(-18);
-  chassis.turn_to_point(18,95);
-  chassis.drive_distance(-80);
-  chassis.drive_distance(-14);
-
-  //goal
-  chassis.right_swing_to_angle(45);
+  LWING.set(true);
+  RWING.set(true);
+  wait(100, msec);
+  for (int i = 0; i < 22; i++) { //22 for matchload
+    chassis.drive_distance(-8);
+    wait(100, msec);
+    chassis.drive_distance(8);
+    wait(200, msec);
+  }
+  LWING.set(false);
+  chassis.drive_distance(-8);
+  chassis.left_swing_to_angle(18);
+  RWING.set(false);
+  wait(100, msec);
+  chassis.drive_max_voltage = 4;
+  chassis.drive_distance(-24);
+  chassis.left_swing_to_angle(33);
+  RWING.set(true);
+  wait(100, msec);
+  chassis.drive_distance(-24);
+  chassis.left_swing_to_angle(44);
   chassis.drive_distance(-20);
-  chassis.turn_to_point(40,-110);
-  chassis.drive_max_voltage = 12;
-  chassis.drive_distance(-15);
-  chassis.drive_distance(12);
-  chassis.drive_distance(-15);
-  chassis.drive_distance(10);
-  
-  //middle
-  chassis.drive_max_voltage = 6;
-  chassis.turn_to_point(-40,10);
-  chassis.drive_distance(25);
-  chassis.drive_distance(20);
-  
-  //collect
-  chassis.turn_to_point(20,-50);
-  chassis.drive_distance(-10);
-  wait(1000,msec);
-  chassis.drive_distance(-10);
-  wait(1000,msec);
-  chassis.left_swing_to_angle(-2);
+  chassis.drive_distance(-20);
+  chassis.drive_distance(-24);
 
-  //score
-  chassis.drive_max_voltage = 12;
+  chassis.left_swing_to_angle(60);
+  chassis.drive_distance(-20);
+  chassis.left_swing_to_angle(85);
+  chassis.drive_distance(-20);
+  chassis.drive_distance(-4);
+  chassis.left_swing_to_angle(105);
+  chassis.drive_distance(-4);
+  chassis.left_swing_to_angle(135);
+
+  chassis.drive_max_voltage = 11;
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+
+  wait(100, msec);
+
+  chassis.drive_max_voltage = 4;
+  chassis.turn_to_point(60, -40);
+  chassis.drive_distance(2);
+  chassis.left_swing_to_angle(180);
+  chassis.drive_distance(-25);
+  chassis.turn_max_voltage = 4;
+  chassis.left_swing_to_angle(130);
   chassis.drive_distance(-15);
   chassis.drive_distance(15);
-  chassis.drive_distance(-15);
-  chassis.drive_distance(15);
+
+  RWING.set(false);
+  
+  chassis.turn_max_voltage = 11;
+  chassis.left_swing_to_angle(195);
+  chassis.drive_distance(-30);
+  
+  RWING.set(true);
+  LWING.set(true);
+  wait(100, msec);
+
+  chassis.left_swing_to_angle(60);
+  chassis.drive_distance(-10);
+
+  chassis.drive_max_voltage = 11;
+  chassis.drive_distance(-18);
+  chassis.drive_distance(20);
+
+
+  // // //highway
+  // chassis.left_swing_to_angle(-20);
+  // chassis.drive_distance(-18);
+  // chassis.turn_to_point(18,95);
+  // chassis.drive_distance(-80);
+  // chassis.drive_distance(-14);
+
+  // //goal
+  // chassis.right_swing_to_angle(45);
+  // chassis.drive_distance(-20);
+  // chassis.turn_to_point(40,-110);
+  // chassis.drive_max_voltage = 12;
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(12);
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(10);
+  
+  // //middle
+  // chassis.drive_max_voltage = 6;
+  // chassis.turn_to_point(-40,10);
+  // chassis.drive_distance(25);
+  // chassis.drive_distance(20);
+  
+  // //collect
+  // chassis.turn_to_point(20,-50);
+  // chassis.drive_distance(-10);
+  // wait(1000,msec);
+  // chassis.drive_distance(-10);
+  // wait(1000,msec);
+  // chassis.left_swing_to_angle(-2);
+
+  // //score
+  // chassis.drive_max_voltage = 12;
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(15);
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(15);
 }
 
 void right_skills_auto(){
   odom_constants();
   chassis.set_coordinates(0, 0, 0);
 
-  chassis.drive_max_voltage = 11;
-  chassis.right_swing_to_angle(-48);
-  wait(1000,msec);
+  chassis.drive_max_voltage = 9;
 
-  //highway
-  chassis.right_swing_to_angle(20);
-  chassis.drive_distance(-18);
-  chassis.turn_to_point(-16,80);
-  chassis.drive_distance(-80);
-  chassis.drive_distance(-11);
+  LWING.set(true);
+  RWING.set(true);
+  wait(100, msec);
+  for (int i = 0; i < 1; i++) { //22 for matchload
+    chassis.drive_distance(-8);
+    wait(100, msec);
+    chassis.drive_distance(8);
+    wait(200, msec);
+  }
+  RWING.set(false);
+  chassis.drive_distance(-8);
+  chassis.right_swing_to_angle(-18);
+  LWING.set(false);
+  wait(100, msec);
+  chassis.drive_max_voltage = 4;
+  chassis.drive_distance(-24);
+  chassis.right_swing_to_angle(-33);
+  LWING.set(true);
+  wait(100, msec);
 
-  //goal
-  chassis.left_swing_to_angle(-45);
+  chassis.drive_distance(-24);
+  chassis.right_swing_to_angle(-44);
   chassis.drive_distance(-20);
-  chassis.turn_to_point(-40,-110);
-  chassis.drive_max_voltage = 12;
-  chassis.drive_distance(-15);
-  chassis.drive_distance(12);
-  chassis.drive_distance(-15);
-  chassis.drive_distance(10);
-  
-  //middle
-  chassis.drive_max_voltage = 6;
-  chassis.turn_to_point(40,10);
-  chassis.drive_distance(25);
-  chassis.drive_distance(20);
-  
-  //collect
-  chassis.turn_to_point(-20,-50);
-  chassis.drive_distance(-10);
-  wait(1000,msec);
-  chassis.drive_distance(-10);
-  wait(1000,msec);
-  chassis.right_swing_to_angle(2);
+  chassis.drive_distance(-20);
+  chassis.drive_distance(-24);
 
-  //score
-  chassis.drive_max_voltage = 12;
+  chassis.right_swing_to_angle(-60);
+  chassis.drive_distance(-20);
+  chassis.right_swing_to_angle(-85);
+  chassis.drive_distance(-20);
+  chassis.drive_distance(-4);
+  chassis.right_swing_to_angle(-105);
+  chassis.drive_distance(-4);
+  chassis.right_swing_to_angle(-135);
+
+  chassis.drive_max_voltage = 11;
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+  chassis.drive_distance(-14);
+  chassis.drive_distance(14);
+
+  wait(100, msec);
+
+  chassis.drive_max_voltage = 4;
+  chassis.turn_to_point(40, -60);
+  chassis.drive_distance(2);
+  chassis.right_swing_to_angle(-180);
+  chassis.drive_distance(-25);
+  chassis.turn_max_voltage = 4;
+  chassis.right_swing_to_angle(-130);
   chassis.drive_distance(-15);
   chassis.drive_distance(15);
-  chassis.drive_distance(-15);
-  chassis.drive_distance(15);
+
+  LWING.set(false);
+  
+  chassis.turn_max_voltage = 11;
+  chassis.right_swing_to_angle(-195);
+  chassis.drive_distance(-30);
+  
+  RWING.set(true);
+  LWING.set(true);
+  wait(100, msec);
+  chassis.right_swing_to_angle(-60);
+
+  chassis.drive_distance(-10);
+
+  chassis.drive_max_voltage = 11;
+  chassis.drive_distance(-20);
+  chassis.drive_distance(25);
+
+
+
+  // odom_constants();
+  // chassis.set_coordinates(0, 0, 0);
+
+  // chassis.drive_max_voltage = 11;
+  // chassis.right_swing_to_angle(-48);
+  // wait(1000,msec);
+
+  // //highway
+  // chassis.right_swing_to_angle(20);
+  // chassis.drive_distance(-18);
+  // chassis.turn_to_point(-16,80);
+  // chassis.drive_distance(-80);
+  // chassis.drive_distance(-11);
+
+  // //goal
+  // chassis.left_swing_to_angle(-45);
+  // chassis.drive_distance(-20);
+  // chassis.turn_to_point(-40,-110);
+  // chassis.drive_max_voltage = 12;
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(12);
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(10);
+  
+  // //middle
+  // chassis.drive_max_voltage = 6;
+  // chassis.turn_to_point(40,10);
+  // chassis.drive_distance(25);
+  // chassis.drive_distance(20);
+  
+  // //collect
+  // chassis.turn_to_point(-20,-50);
+  // chassis.drive_distance(-10);
+  // wait(1000,msec);
+  // chassis.drive_distance(-10);
+  // wait(1000,msec);
+  // chassis.right_swing_to_angle(2);
+
+  // //score
+  // chassis.drive_max_voltage = 12;
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(15);
+  // chassis.drive_distance(-15);
+  // chassis.drive_distance(15);
 }
 
 // code below is just example code (may be helpful for future)

@@ -116,7 +116,7 @@ PORT3,     -PORT4,
 
 );
 
-int current_auton_selection = 1;
+int current_auton_selection = 3;
 bool auto_started = false;
 
 void pre_auton(void) {
@@ -129,25 +129,23 @@ void pre_auton(void) {
     wait(100, msec);
   }
 
-  CHAIN.resetPosition();
-
   while(auto_started == false){            //Changing the names below will only change their names on the
     Brain.Screen.clearScreen();            //brain screen for auton selection.
     switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
       case 0:
-        Brain.Screen.printAt(50, 50, "TUNE PID");
+        Brain.Screen.printAt(175, 200, "TUNE PID");
         break;
       case 1:
-        Brain.Screen.printAt(50, 50, "CLOSE AUTO");
+        Brain.Screen.printAt(175, 200, "CLOSE AUTO");
         break;
       case 2:
-        Brain.Screen.printAt(50, 50, "FAR AUTO");
+        Brain.Screen.printAt(175, 200, "FAR AUTO");
         break;
       case 3:
-        Brain.Screen.printAt(50, 50, "LEFT SKILLS AUTO");
+        Brain.Screen.printAt(175, 200, "LEFT SKILLS AUTO");
         break;
       case 4:
-        Brain.Screen.printAt(50, 50, "RIGHT SKILLS AUTO");
+        Brain.Screen.printAt(175, 200, "RIGHT SKILLS AUTO");
     }
     if(Brain.Screen.pressing()){
       while(Brain.Screen.pressing()) {}
@@ -233,7 +231,7 @@ void usercontrol(void) {
     // ........................................................................
 
     cataKEY1 = Controller1.ButtonA.pressing();
-    cataKEY2 = Controller1.ButtonY.pressing();
+    cataKEY2 = Controller1.ButtonX.pressing();
 
     intakeKEY1 = Controller1.ButtonR1.pressing();
     intakeKEY2 = Controller1.ButtonR2.pressing();
@@ -241,11 +239,11 @@ void usercontrol(void) {
     chainKEY1 = Controller1.ButtonL1.pressing();
     chainKEY2 = Controller1.ButtonL2.pressing();
     
-    wingsKEY = Controller1.ButtonX.pressing();
-    wingsLKEY = Controller1.ButtonLeft.pressing();
-    wingsRKEY = Controller1.ButtonRight.pressing();
+    wingsKEY = Controller1.ButtonY.pressing();
+    wingsLKEY = Controller1.ButtonDown.pressing();
+    wingsRKEY = Controller1.ButtonB.pressing();
 
-    liftKEY = Controller1.ButtonUp.pressing();
+    liftKEY = Controller1.ButtonRight.pressing();
 
     if(cataKEY2){
       CATA_state = 1;
