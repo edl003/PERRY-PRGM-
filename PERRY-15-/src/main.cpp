@@ -69,7 +69,7 @@ PORT16,
 //External ratio, must be in decimal, in the format of input teeth/output teeth.
 //If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
 //If the motor drives the wheel directly, this value is 1:
-0.75,
+1,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
@@ -123,6 +123,11 @@ void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   default_constants();
+
+  //LLIFT.set(true);
+  //RLIFT.set(true);
+  CLIMB1.set(false);
+  CLIMB2.set(true);
 
   Inertial.calibrate();
   while(Inertial.isCalibrating()) {
@@ -194,7 +199,6 @@ void usercontrol(void) {
   //driver_skills();
 
   int CHAIN_speed = 180;
-  int CATA_state = 0;
 
   bool wingsToggle = false;
   bool wingsButton = false;
@@ -223,6 +227,10 @@ void usercontrol(void) {
 
   bool liftKEY = false;
 
+  bool climbKEY = false;
+  bool climbToggle = false;
+  bool climbButton = false;
+
   while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
@@ -233,8 +241,8 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
-    cataKEY1 = Controller1.ButtonA.pressing();
-    cataKEY2 = Controller1.ButtonX.pressing();
+    cataKEY1 = Controller1.ButtonX.pressing();
+    cataKEY2 = Controller1.ButtonA.pressing();
 
     intakeKEY1 = Controller1.ButtonR1.pressing();
     intakeKEY2 = Controller1.ButtonR2.pressing();
@@ -247,18 +255,26 @@ void usercontrol(void) {
     wingsRKEY = Controller1.ButtonB.pressing();
 
     liftKEY = Controller1.ButtonRight.pressing();
+    climbKEY = Controller1.ButtonA.pressing();
 
-    if(cataKEY2){
-      CATA_state = 1;
+    if (climbKEY && !climbButton){
+      climbButton = true; 
+      climbToggle = !climbToggle;
+    }
+    else if (!climbKEY) climbButton = false;
+
+    if (climbToggle){
+      CLIMB1.set(true);
+      CLIMB2.set(true);
+    } else {
+      CLIMB1.set(false);
+      CLIMB2.set(true);
     }
 
-    if((LIMIT.pressing()==false) && (CATA_state == 0)){
-      wait(250, msec);
-      CATA.spin(fwd, 8, volt);
-    }else if(cataKEY1){
-      CATA.spin(fwd, 8, volt);
+    if(cataKEY1){
+      CATA.spin(reverse, 12, volt);
     }else{
-      CATA.stop(coast);
+      CATA.stop(hold);
     }
     
     if(intakeKEY1){
