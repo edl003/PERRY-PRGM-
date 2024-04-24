@@ -123,6 +123,7 @@ void close_auto(){
   //match load area
   chassis.drive_max_voltage = 8; 
   chassis.turn_to_point(45, 80);
+  wait(1000, msec);
   chassis.drive_distance(-20);
   chassis.drive_distance(-20);
   chassis.drive_distance(-20);
@@ -146,7 +147,7 @@ void close_auto(){
 
   float backDRIVE = 6;
 
-  for (int i = 0; i < 4; i++) { //5 for matchload
+  for (int i = 0; i < 7; i++) { //5 for matchload
     chassis.drive_distance(-6 * scale15);
     wait(200, msec);
     chassis.drive_distance(backDRIVE * scale15);
@@ -226,7 +227,7 @@ void far_auto(){
   wait(725, msec);
   CHAIN.stop(hold);
   INTAKE.stop(coast);
-  chassis.drive_distance(14 * scale24);
+  chassis.drive_distance(16 * scale24);
   chassis.drive_distance(-12 * scale24);
 
 
@@ -248,8 +249,8 @@ void far_auto(){
 
   float backDRIVE = 6;
 
-  for (int i = 0; i < 2; i++) { //5 for matchload
-    chassis.drive_distance(-6 * scale24);
+  for (int i = 0; i < 4; i++) { //5 for matchload
+    chassis.drive_distance(-4 * scale24);
     wait(200, msec);
     chassis.drive_distance(backDRIVE * scale24);
     //backDRIVE = backDRIVE * 0.995;
@@ -294,7 +295,7 @@ void far_auto(){
   wait(500, msec);
   chassis.drive_distance(10 * scale24);
   chassis.drive_distance(-14 * scale24);
-  chassis.drive_distance(10 * scale24);
+  chassis.drive_distance(8 * scale24);
 
 
 
@@ -312,10 +313,15 @@ void far_auto(){
   RWING.set(true);
   wait(100, msec);
 
+  chassis.drive_max_voltage = 2;
+
   chassis.drive_distance(-22);
-  chassis.turn_to_angle(50);
-  chassis.drive_distance(-26);
-  chassis.drive_distance(24);
+  chassis.right_swing_to_angle(50);
+
+  chassis.drive_max_voltage = 8; 
+
+  chassis.drive_distance(-24);
+  chassis.drive_distance(22);
 
 }
 
