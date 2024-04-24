@@ -305,7 +305,7 @@ void far_auto(){
   
   wait(1000, msec);
   chassis.drive_distance(20);
-  chassis.drive_distance(20);
+  chassis.drive_distance(18);
   chassis.turn_to_point(-80,0);
 
   LWING.set(true);
@@ -325,6 +325,9 @@ void far_auto(){
 
   chassis.drive_distance(-24);
   chassis.drive_distance(22);
+
+  LWING.set(false);
+  RWING.set(false);
 
 }
 
