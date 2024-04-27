@@ -321,7 +321,7 @@ void far_auto(){
 
   chassis.drive_max_voltage = 8; 
 
-  wait(4000, msec);
+  wait(2000, msec);
 
   chassis.drive_distance(-24);
   chassis.drive_distance(22);

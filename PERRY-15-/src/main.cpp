@@ -124,8 +124,8 @@ void pre_auton(void) {
   vexcodeInit();
   default_constants();
 
-  //LLIFT.set(true);
-  //RLIFT.set(true);
+  LLIFT.set(true);
+  RLIFT.set(true);
   CLIMB1.set(false);
   CLIMB2.set(true);
 
