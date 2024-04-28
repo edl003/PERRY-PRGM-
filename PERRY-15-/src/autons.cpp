@@ -115,7 +115,7 @@ void close_auto(){
   INTAKE.spin(reverse, 11, volt);
   INTAKE.spin(fwd, 11, volt);
   chassis.drive_distance(6);
-  wait(500, msec);
+  wait(1500, msec);
   chassis.drive_distance(-8);
   INTAKE.stop(coast);
 
@@ -241,6 +241,8 @@ void far_auto(){
   chassis.left_swing_to_angle(90);
   chassis.drive_distance(6 * scale24);
 
+  chassis.drive_distance(-2);
+
   chassis.drive_max_voltage = 6.5;
 
   LWING.set(true);
@@ -317,14 +319,15 @@ void far_auto(){
 
   chassis.drive_distance(-20);
   chassis.drive_distance(-20);
+  chassis.drive_distance(-6);
   chassis.right_swing_to_angle(50);
-
-  chassis.drive_max_voltage = 8; 
 
   wait(2000, msec);
 
-  chassis.drive_distance(-24);
-  chassis.drive_distance(22);
+  chassis.drive_max_voltage = 8; 
+
+  chassis.drive_distance(-26);
+  chassis.drive_distance(24);
 
   LWING.set(false);
   RWING.set(false);
