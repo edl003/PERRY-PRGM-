@@ -9,7 +9,7 @@
 
 ## Initial testing of the Winch and Pulley Climbing Mechanism. 
 
-After completing the build for my Robotic ARM v1, I quickly programmed a control that mapped the variable trigger on the PS4 controller to the 5 servos on the hand. Through this, I was able to adjust how much force I wanted to exert when grabbing an object. 
+After programming the general driver controls for the robot, I was testing out the functionality of the robot. As you can see, a pneumatic hook holding the climbing mechanism is released. This then, allows the robot to drive to the horizontal bar. Ultimately allowing the robot to hook onto the bar and climbing up on it. 
 
 <div align="center">
   <video src=https://github.com/user-attachments/assets/479823b1-d0ff-4a1f-93ef-812c9807be44 />
@@ -17,7 +17,7 @@ After completing the build for my Robotic ARM v1, I quickly programmed a control
 
 ## Successful test of the Autonomous Program during a Robotics Competition. 
 
-I continued mapping the various controls on the PS4 controller to the various hand servos and dynamixel servos. This gave me complete control over all of the degrees of motion that the Robotic ARM v1 had to offer. Not only that, but I also created custom scripts that showcased various gestures on the hand when I pressed certain buttons on the PS4 controller. 
+For our autonomous programming, I mainly relied on a Intertial Measurement Unit (IMU) and the Integrated Motor Encoders (IME) on the robot. I utilized an odometry algorithm to estimate the position of the robot over time relative to where it initially started at. In conjunction with this, I used a Propertional-Integral-Derivative (PID) controller to ensure that the robot would be able to travel to that position properly. With a properly tuned PID, our robot was able to collect and score many of the game objects (the acorns) into the opposing goal side. 
 
 <div align="center">
   <video src=https://github.com/user-attachments/assets/6f9d7700-0877-4fe4-a05a-1a1c57b0ee22 />
